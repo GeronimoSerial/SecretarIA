@@ -1,6 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const { spawn } = require('child_process');
 const fs = require('fs');
+const predefinedResponses = require('./predefinedResponses');
 
 const client = new Client({
     authStrategy: new LocalAuth()
@@ -57,8 +58,16 @@ client.on('ready', () => {
 
 client.on('message', async message => {
     if (!message.fromMe) {
-        const userQuery = message.body;
+        const userQuery = message.body.toLowerCase();
         const sender= message.from;
+
+        if (predefinedResponses[userQuery]) {
+            await message.reply(predefinedResponses[userQuery]);
+            return;
+        }
+
+        // registrar la conversacion
+        logConversation(sender, userQuery);
 
         try {
             const aiResponse = await getMetaAIResponse(userQuery);
