@@ -4542,3 +4542,14 @@ src/.wwebjs_auth/session/Default/databases/Databases.db
 src/.wwebjs_auth/session/Default/databases/Databases.db-journal
 src/.wwebjs_cache/2.3000.1016149997.html
 src/ai/__pycache__/meta_ai_script.cpython-312.pyc
+.gitignore
+src/ai/__pycache__/context.cpython-312.pyc
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000188.log
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000190.ldb
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000191.ldb
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000192.ldb
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000193.ldb
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000194.ldb
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000195.ldb
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000196.ldb
+src/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000197.ldb
