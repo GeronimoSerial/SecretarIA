@@ -1,7 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const { spawn } = require('child_process');
 const fs = require('fs');
-const predefinedResponses = require('./predefinedResponses');
+const predefinedResponses = require('./src/data/predefinedResponses');
 
 const client = new Client({
     authStrategy: new LocalAuth()
@@ -9,7 +9,7 @@ const client = new Client({
 
 function logConversation(sender, question, answer) {
     const logEntry = `[Sender: ${sender}]: Question: ${question}\n Respuesta: ${answer}\n\n`;
-    fs.appendFile('conversation.log', logEntry, (err) => {
+    fs.appendFile('.../logs/conversation.log', logEntry, (err) => {
         if (err) {
             console.error('Error al escribir en el archivo de registro: ', err);
         } else {
@@ -20,7 +20,7 @@ function logConversation(sender, question, answer) {
 
 async function getMetaAIResponse(prompt) {
     return new Promise((resolve, reject) => {
-        const pythonProcess = spawn('python', ['meta_ai_script.py', prompt], {
+        const pythonProcess = spawn('python', [__dirname + '/src/ai/meta_ai_script.py', prompt], {
             env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
         });
 
@@ -57,7 +57,7 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-    if (!message.fromMe) {
+    if (message.fromMe) {
         const userQuery = message.body.toLowerCase();
         const sender= message.from;
 
