@@ -1,15 +1,18 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const { spawn } = require('child_process');
 const fs = require('fs');
-const predefinedResponses = require('./src/data/predefinedResponses');
+const predefinedResponses = require('./data/predefinedResponses');
+const path = require('path');
 
 const client = new Client({
     authStrategy: new LocalAuth()
 });
 
 function logConversation(sender, question, answer) {
+
+    const logFilePath = path.join(__dirname, 'logs', 'conversation.log');
     const logEntry = `[Sender: ${sender}]: Question: ${question}\n Respuesta: ${answer}\n\n`;
-    fs.appendFile('.../logs/conversation.log', logEntry, (err) => {
+    fs.appendFile(logFilePath, logEntry, (err) => {
         if (err) {
             console.error('Error al escribir en el archivo de registro: ', err);
         } else {
@@ -20,7 +23,8 @@ function logConversation(sender, question, answer) {
 
 async function getMetaAIResponse(prompt) {
     return new Promise((resolve, reject) => {
-        const pythonProcess = spawn('python', [__dirname + '/src/ai/meta_ai_script.py', prompt], {
+        const scriptPath = path.join(__dirname, 'ai', 'meta_ai_script.py');
+        const pythonProcess = spawn('python', [scriptPath, prompt], {
             env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
         });
 
@@ -57,9 +61,9 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-    if (message.fromMe) {
+    // if (message.fromMe) {
         const userQuery = message.body.toLowerCase();
-        const sender= message.from;
+        const sender = message.from;
 
         if (predefinedResponses[userQuery]) {
             await message.reply(predefinedResponses[userQuery]);
@@ -67,7 +71,7 @@ client.on('message', async message => {
         }
 
         // registrar la conversacion
-        logConversation(sender, userQuery);
+        logConversation(sender, userQuery, '');
 
         try {
             const aiResponse = await getMetaAIResponse(userQuery);
@@ -79,7 +83,7 @@ client.on('message', async message => {
             console.error('Error al procesar el mensaje:', error);
             await message.reply('Lo siento, hubo un error al procesar tu mensaje.');
         }
-    }
+    // }
 });
 
 client.initialize();
