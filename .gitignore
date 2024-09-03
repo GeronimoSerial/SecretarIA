@@ -3846,3 +3846,5 @@ node_modules/zip-stream/node_modules/archiver-utils/README.md
 conversation.log
 conversation.log
 predefinedResponses.txt
+/src/.wwebjs_auth
+/src/ai/__pycache__
