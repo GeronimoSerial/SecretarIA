@@ -8,6 +8,11 @@ const client = new Client({
     authStrategy: new LocalAuth()
 });
 
+//administradores
+const admins = ['5493794376025@c.us'];
+
+
+
 function logConversation(sender, question, answer) {
 
     const logFilePath = path.join(__dirname, 'logs', 'conversation.log');
@@ -20,6 +25,7 @@ function logConversation(sender, question, answer) {
         }
     })
 }
+
 
 async function getMetaAIResponse(prompt) {
     return new Promise((resolve, reject) => {
@@ -61,7 +67,9 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-    // if (message.fromMe) {
+           
+    
+    if (!message.fromMe) {
         const userQuery = message.body.toLowerCase();
         const sender = message.from;
 
@@ -83,7 +91,10 @@ client.on('message', async message => {
             console.error('Error al procesar el mensaje:', error);
             await message.reply('Lo siento, hubo un error al procesar tu mensaje.');
         }
-    // }
+    }
+
+
+
 });
 
 client.initialize();

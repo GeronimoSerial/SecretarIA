@@ -1,8 +1,7 @@
 module.exports = {
     // Menú principal
-    'menu': `
-    Bienvenido al asistente virtual del Consejo General de Educación. 
-    Por favor, elige una opción:
+    'menu': `Bienvenido al asistente virtual del Consejo General de Educación. 
+Por favor, elige una opción:
     1 - Inscripciones escolares
     2 - Trámites de títulos
     3 - Concursos docentes
@@ -21,15 +20,14 @@ module.exports = {
     '6': 'Para la toma de posesión, necesitarás el Formulario de Designación o la Toma de Posesión y la Declaración Jurada de Cargos. ¿Te gustaría saber más?',
     
     // Menú secundario
-    '7': `
-    Más opciones:
+    '7': `Más opciones:
     8 - Líneas de acción educativa
     9 - Programas educativos específicos
     10 - Preguntas frecuentes
     11 - Información de contacto
     0 - Volver al menú principal
     `,
-
+    
     // Respuestas a opciones del menú secundario
     '8': 'Las líneas de acción educativa incluyen la promoción de una cultura inclusiva, evaluación para el mejoramiento, y más. ¿Te gustaría saber más sobre alguna en particular?',
     '9': 'Los programas educativos específicos abarcan varias áreas. ¿Te interesa información sobre un programa en particular?',
