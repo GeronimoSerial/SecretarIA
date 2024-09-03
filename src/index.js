@@ -1,4 +1,4 @@
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, Location } = require('whatsapp-web.js');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const predefinedResponses = require('./data/predefinedResponses');
@@ -11,7 +11,14 @@ const client = new Client({
 //administradores
 const admins = ['5493794376025@c.us'];
 
+const AuthAdmin = {};
 
+const adminCommands = {
+    '!status': async (message) => {
+        await message.reply('Sistema operativo y funcionando.');
+    },
+
+};
 
 function logConversation(sender, question, answer) {
 
@@ -25,7 +32,6 @@ function logConversation(sender, question, answer) {
         }
     })
 }
-
 
 async function getMetaAIResponse(prompt) {
     return new Promise((resolve, reject) => {
@@ -67,34 +73,62 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-           
-    
-    if (!message.fromMe) {
-        const userQuery = message.body.toLowerCase();
-        const sender = message.from;
+    const userId = message.from; // Asegúrate de definir correctamente el ID del usuario
 
-        if (predefinedResponses[userQuery]) {
-            await message.reply(predefinedResponses[userQuery]);
-            return;
+    // Verificar si el mensaje es de un administrador
+    if (message.body === '!login' && admins.includes(userId)) {
+            AuthAdmin[userId] = true;
+            return message.reply('Autenticado como administrador. Tienes permisos especiales.');
         }
+        else if (message.body === '!logout') {
+            AuthAdmin[userId] = false;
+            return message.reply('Sesión cerrada. No tienes permisos especiales.');
+        }
+        
+        // Verificar si el administrador está autenticado
+        if (AuthAdmin[userId]) {
+            const command = message.body.split(' ')[0].toLowerCase();
+            if (adminCommands.hasOwnProperty(command)) {
+                await adminCommands[command](message);
+                return;
+            }
 
-        // registrar la conversacion
-        logConversation(sender, userQuery, '');
+            // switch (message.body) {
+            //     case '!status':
+            //         await message.reply('Sistema operativo y funcionando.');
+            //         return;
+            //     // Otros comandos para administradores autenticados
+            //     default:
+            //         break;
+            // }
+        }     
+     
+       // Manejo de mensajes de usuarios no autorizados
+     if (!message.fromMe) {
+            const userQuery = message.body.toLowerCase();
+            const sender = message.from;
 
-        try {
-            const aiResponse = await getMetaAIResponse(userQuery);
-            await message.reply(aiResponse);
+            if (predefinedResponses[userQuery]) {
+                await message.reply(predefinedResponses[userQuery]);
+                return;
+            }
 
-            // registrar la conversacion
-            logConversation(sender, userQuery, aiResponse);
-        } catch (error) {
-            console.error('Error al procesar el mensaje:', error);
-            await message.reply('Lo siento, hubo un error al procesar tu mensaje.');
+            // Registrar la conversación
+            logConversation(sender, userQuery, '');
+
+            try {
+                const aiResponse = await getMetaAIResponse(userQuery);
+                await message.reply(aiResponse);
+
+                // Registrar la conversación
+                logConversation(sender, userQuery, aiResponse);
+            } catch (error) {
+                console.error('Error al procesar el mensaje:', error);
+                await message.reply('Lo siento, hubo un error al procesar tu mensaje.');
+            }
         }
     }
+);
 
-
-
-});
 
 client.initialize();

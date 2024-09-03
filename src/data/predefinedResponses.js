@@ -1,14 +1,26 @@
 module.exports = {
+    
+    //saludos 
+    'hola': '¡Hola! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'hola como estas': '¡Hola! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'buen dia': '¡Buenos días! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'buenas tardes': '¡Buenas tardes! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'buenas noches': '¡Buenas noches! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'buenos dias': '¡Buenos días! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'buenos tardes': '¡Buenas tardes! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'buenos noches': '¡Buenas noches! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'buenas': '¡Buenas! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+
     // Menú principal
     'menu': `Bienvenido al asistente virtual del Consejo General de Educación. 
 Por favor, elige una opción:
-    1 - Inscripciones escolares
-    2 - Trámites de títulos
-    3 - Concursos docentes
-    4 - Padrón de títulos
-    5 - Traslados definitivos
-    6 - Toma de posesión
-    7 - Ver más opciones
+    *1* - Inscripciones escolares
+    *2* - Trámites de títulos
+    *3* - Concursos docentes
+    *4* - Padrón de títulos
+    *5* - Traslados definitivos
+    *6* - Toma de posesión
+    *7* - Ver más opciones
     `,
 
     // Respuestas a opciones del menú principal
@@ -21,18 +33,18 @@ Por favor, elige una opción:
     
     // Menú secundario
     '7': `Más opciones:
-    8 - Líneas de acción educativa
-    9 - Programas educativos específicos
-    10 - Preguntas frecuentes
-    11 - Información de contacto
-    0 - Volver al menú principal
+    *8* - Líneas de acc*ión educativa
+    *9* - Programas educativos específicos
+    *10* - Preguntas frecuentes
+    *11* - Información de contacto
+    *0* - Volver al menú principal
     `,
-    
+
     // Respuestas a opciones del menú secundario
     '8': 'Las líneas de acción educativa incluyen la promoción de una cultura inclusiva, evaluación para el mejoramiento, y más. ¿Te gustaría saber más sobre alguna en particular?',
     '9': 'Los programas educativos específicos abarcan varias áreas. ¿Te interesa información sobre un programa en particular?',
     '10': 'Algunas preguntas frecuentes incluyen: [Lista breve]. ¿Te gustaría una respuesta a alguna en particular?',
-    '11': 'Puedes contactar al CGE en Catamarca 640, Corrientes, Argentina. ¿Necesitas más información de contacto?',
+    '11': 'Puedes contactar al CGE en Catamarca 640, Corrientes, Argentina ¿Necesitas más información de contacto?' + location,
     '0': 'Volviendo al menú principal. Por favor, elige una opción: 1 - Inscripciones escolares, 2 - Trámites de títulos, 3 - Concursos docentes, etc.',
     
     // Respuesta predeterminada
