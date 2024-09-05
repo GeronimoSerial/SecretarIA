@@ -13,7 +13,7 @@ This project is a WhatsApp bot built with `whatsapp-web.js` and Node.js. The bot
 
 ### Requirements
 
-- Node.js >= 14.17.0
+- Node.js >= 18
 - Python 3.x (for Python scripts)
 - Docker (optional, for deployment)
 - `whatsapp-web.js`
