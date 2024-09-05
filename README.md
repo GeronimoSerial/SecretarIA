@@ -33,7 +33,7 @@ This project is a WhatsApp bot built with `whatsapp-web.js` and Node.js. The bot
    ```bash
    npm install
    
-3. **Install necessary Python dependencies (if any):
+3. **Install necessary Python dependencies**:
 
    ```bash
    pip install -r requeriments.txt
