@@ -12,7 +12,7 @@ const predefinedResponses = {
     'buenos tardes': '¡Buenas tardes! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
     'buenos noches': '¡Buenas noches! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
     'buenas': '¡Buenas! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
-    'ubicacion': `${location}`,
+    'ubicacion': location,
 
 
     // Menú principal

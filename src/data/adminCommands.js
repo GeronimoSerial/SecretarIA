@@ -1,3 +1,5 @@
+const {location} = require('./variables');
+
 const adminCommands = {
     '!status': async (message) => {
         const now = new Date();
