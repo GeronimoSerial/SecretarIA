@@ -1,4 +1,6 @@
-module.exports = {
+const location = require('./variables').location;
+
+const predefinedResponses = {
     
     //saludos 
     'hola': '¡Hola! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
@@ -10,6 +12,8 @@ module.exports = {
     'buenos tardes': '¡Buenas tardes! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
     'buenos noches': '¡Buenas noches! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
     'buenas': '¡Buenas! soy el asistente virtual del Consejo General de Educacion. Escribe *menu* para ver mis opciones.',
+    'ubicacion': `${location}`,
+
 
     // Menú principal
     'menu': `Bienvenido al asistente virtual del Consejo General de Educación. 
@@ -49,4 +53,6 @@ Por favor, elige una opción:
     
     // Respuesta predeterminada
     'default': 'Lo siento, no entiendo esa opción. Por favor, elige una de las opciones disponibles en el menú enviando el número correspondiente.'
-};
+}
+    module.exports = predefinedResponses;
+

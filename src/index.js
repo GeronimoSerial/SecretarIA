@@ -1,24 +1,17 @@
-const { Client, LocalAuth, Location } = require('whatsapp-web.js');
+const { Client, LocalAuth } = require('whatsapp-web.js');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const predefinedResponses = require('./data/predefinedResponses');
+const {admins} = require('./data/variables');
 const path = require('path');
+const adminCommands = require('./data/adminCommands');
 
 const client = new Client({
     authStrategy: new LocalAuth()
 });
 
-//administradores
-const admins = ['5493794376025@c.us'];
-
 const AuthAdmin = {};
 
-const adminCommands = {
-    '!status': async (message) => {
-        await message.reply('Sistema operativo y funcionando.');
-    },
-
-};
 
 function logConversation(sender, question, answer) {
 
@@ -92,15 +85,6 @@ client.on('message', async message => {
                 await adminCommands[command](message);
                 return;
             }
-
-            // switch (message.body) {
-            //     case '!status':
-            //         await message.reply('Sistema operativo y funcionando.');
-            //         return;
-            //     // Otros comandos para administradores autenticados
-            //     default:
-            //         break;
-            // }
         }     
      
        // Manejo de mensajes de usuarios no autorizados
