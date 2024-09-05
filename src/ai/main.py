@@ -13,4 +13,4 @@ if __name__ == "__main__":
     # Toma la consulta del usuario desde los argumentos del script
     user_prompt = sys.argv[1]
     response = get_meta_ai_response(user_prompt)
-    print(response)  # Python ya maneja UTF-8 de forma predeterminada al imprimir
+    print(response)  
