@@ -25,8 +25,8 @@ This project is a WhatsApp bot built with `whatsapp-web.js` and Node.js. The bot
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/geronimoserial/whatsapp-bot.git
-   cd whatsapp-bot
+   git clone https://github.com/GeronimoSerial/wppbot-cge.git
+   cd wppbot-cge
 
 2. **Install Node.js dependencies:**
 
