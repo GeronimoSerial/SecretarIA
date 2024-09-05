@@ -67,6 +67,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Copiar el resto de los archivos de la aplicación
 COPY . .
 
+EXPOSE 8080
+
 RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
     && mkdir -p /home/pptruser/Downloads \
     && chown -R pptruser:pptruser /home/pptruser \
