@@ -44,7 +44,7 @@ This project is a WhatsApp bot built with `whatsapp-web.js` and Node.js. The bot
    Run the bot for the first time to scan the QR code and connect your WhatsApp account:
 
    ```bash
-   pip install -r requeriments.txt
+   node src/index.js
 
 ### Usage
 
