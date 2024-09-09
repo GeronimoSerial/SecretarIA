@@ -48,7 +48,9 @@ Por favor, elige una opción:
     '8': 'Las líneas de acción educativa incluyen la promoción de una cultura inclusiva, evaluación para el mejoramiento, y más. ¿Te gustaría saber más sobre alguna en particular?',
     '9': 'Los programas educativos específicos abarcan varias áreas. ¿Te interesa información sobre un programa en particular?',
     '10': 'Algunas preguntas frecuentes incluyen: [Lista breve]. ¿Te gustaría una respuesta a alguna en particular?',
-    '11': 'Puedes contactar al CGE en Catamarca 640, Corrientes, Argentina ¿Necesitas más información de contacto?' + location,
+    '11': ['Puedes contactar al CGE en Catamarca 640, Corrientes, Argentina ¿Necesitas más información de contacto?',
+        location
+    ],
     '0': 'Volviendo al menú principal. Por favor, elige una opción: 1 - Inscripciones escolares, 2 - Trámites de títulos, 3 - Concursos docentes, etc.',
     
     // Respuesta predeterminada

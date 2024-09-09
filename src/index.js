@@ -93,6 +93,12 @@ client.on('message', async message => {
             const sender = message.from;
 
             if (predefinedResponses[userQuery]) {
+                //para dos respuestas
+                if(Array.isArray(predefinedResponses[userQuery])) {
+                    for(const response of predefinedResponses[userQuery]) {
+                        await message.reply(response);
+                    }
+                }
                 await message.reply(predefinedResponses[userQuery]);
                 return;
             }
