@@ -99,6 +99,7 @@ client.on('message', async message => {
 
             // Registrar la conversación
             logConversation(sender, userQuery, '');
+            await message.reply('Procesando tu solicitud... Por favor, espera un momento.');
 
             try {
                 const aiResponse = await getMetaAIResponse(userQuery);
