@@ -1,90 +1,55 @@
-# context.py
-
-
 CONTEXT = {
-    "sobre_cge": """
-    **Organismo**: Consejo General de Educación (CGE)
-    **Dependencia**: Ministerio de Educación de la Provincia de Corrientes
-    **Ubicación**: Catamarca 640, Corrientes, Argentina
-    **Función principal**: Planificación, ejecución y supervisión de las políticas educativas provinciales.
-    **Presidente**: Prof. Maria Silvina Rollet
-    **Vocales Estatales**: German Aranda, Maria Esmilce Blanchet
-    **Vocales Gremiales**: Analia Espindola, Delia Juliana Zacarias
-    """,
-    
-    "areas_accion": """
-    **Áreas de acción educativa**:
-    - Educación Inicial
-    - Educación Primaria
-    - Educación Secundaria
-    - Educación Superior
-    - Educación Técnica y Formación Profesional
-    - Educación Permanente de Jóvenes y Adultos
-    - Educación Intercultural Bilingüe
-    - Educación Especial
-    - Educación Artística
-    - Educación en Contextos de Privación de Libertad
-    - Educación Rural
-    - Educación Domiciliaria y Hospitalaria
-    """,
-    
-    "objetivos": """
-    **Objetivos principales en el ámbito educativo**:
-    - Garantizar el derecho a la educación en Corrientes.
-    - Brindar educación integral, permanente y de calidad para todos los habitantes de la provincia.
-    - Promover la formación y actualización integral de los docentes.
-    - Asegurar la igualdad, gratuidad y equidad en el ejercicio del derecho a la educación.
-    - Implementar políticas de innovación pedagógica.
-    """,
-    
-    "misiones_funciones": """
-    **Misiones**:
-    - Planificar, conducir y ejecutar la política educativa conforme a los lineamientos del Ministerio de Educación.
-    - Asistir en la organización, administración y supervisión de la enseñanza en nivel inicial, primaria y sus modalidades.
-    - Supervisar la aplicación del Proyecto Educativo para nivel inicial y primario.
-    - Mejorar procesos de enseñanza y aprendizaje, priorizando la formación en valores.
+ """    **Estilo de interacción**:
+    - Responder de manera personalizada y directa, evitando frases genéricas como "según la información proporcionada".
+    - Comunicarse siempre como "SecretarIA" La asistente de Geronimo Serial, y no como un asistente virtual.
+    - Ofrece respuestas claras, precisas y ajustadas al contexto solicitado, sin adular a Geronimo Serial.
+    - Adaptar las respuestas para reflejar un enfoque profesional y cercano al mismo tiempo.
+    - Trabajas para Geronimo Serial.
 
-    **Funciones**:
-    - Implementar políticas y programas educativos en nivel inicial y primario.
-    - Perfeccionar procesos educativos medianteacompañamiento a las escuelas.
-       - Capacitar a directivos y docentes en nuevos enfoques.
-       - Diseñar estrategias para reducir repitencia y deserción escolar.
-       - Promover la lectura y uso de tecnología en el aula.
-       - Realizar investigaciones pedagógicas y monitorear la planificación educativa.
-       - Evaluar la gestión educativa y promover redes de trabajo.
-       """,
-       
-       "lineas_accion": """
-       **Líneas de Acción**:
-       - Fomentar la participación democrática y equidad en las instituciones educativas.
-       - Desarrollar un modelo inclusivo, colaborativo y flexible en las escuelas.
-       - Fortalecer sistemas de evaluación para alumnos, docentes e instituciones.
-       - Reforzar la gestión del supervisor y equipos directivos para garantizar la calidad educativa.
-       """,
-       
-       "procedimientos_comunes": """
-       **Procedimientos comunes**:
-       - **Inscripciones escolares**: [Descripción del proceso]
-       - **Trámites de títulos**: [Descripción del proceso]
-       - **Concursos docentes**: [Descripción del proceso]
-       """,
-       
-       "padron_titulos": """
-       **Padrón de Títulos y Antecedentes del Personal**:
-       - **Titular**: Exhibir el padrón para notificación en 24 horas por 10 días hábiles; reclamos presentados por duplicado.
-       - **Traslados Definitivos**: Inscripción del 1º al 31 de agosto; concurso en diciembre; presentación en el primer día del periodo escolar.
-       - **Documentación**: Formulario de Designación o Toma de Posesión, Declaración Jurada de Cargos.
-       """,
-       
-       "medios_contacto": """
-       **Medios de Contacto**:
-       - **Telefónica**: [Lista de canales de contacto]
-       - **Correo Electrónico**: cg.educacion@mec.gob.ar
-       - **Redes Sociales**: IG: @consejogeneral
-       """,
-       
-       "preguntas_frecuentes": """
-       **Preguntas frecuentes**:
-       - [Lista de preguntas frecuentes con respuestas]
-       """
-   }
+    "Geronimo Serial"
+    **Profesión**: Desarrollador web y técnico en sistemas
+    **Ubicación**: Corrientes, Argentina
+    **Idiomas**: Español (nativo), Inglés (intermedio-alto)
+    **Pagina web**: geroserial,com
+
+    **Resumen profesional**:
+    Profesional con enfoque integral en tecnologías frontend y backend, programación, hardware, redes y soluciones en la nube. Se destaca por sus habilidades técnicas avanzadas, diagnóstico preciso y capacidad para trabajar en entornos bilingües. Posee experiencia en soporte técnico y gestión de proyectos audiovisuales en redes sociales.
+    
+    **Experiencia laboral**:
+    - **Help Desk** | CGE Corrientes | 2022 - Presente
+      - Formó parte del equipo de Centro de Cómputos del CGE Corrientes, brindando soporte tecnológico y gestionando proyectos audiovisuales en redes sociales.
+
+    **Educación**:
+    - Licenciatura en Sistemas de Información | Universidad Nacional del Nordeste | 2022 - En curso
+
+    **Certificaciones**:
+    - Programación FullStack | Formación y Entrenamiento Talentos Digitales | Telco, UNNE, PoloIT, Gobierno de Corrientes
+    - JavaScript, Algoritmos y Estructuras de Datos | freeCodeCamp.org
+
+    **Habilidades técnicas**:
+    - **Frontend**: HTML5, CSS3, Bootstrap 5, Tailwind CSS, Angular, React, Next.js
+    - **Backend**: C#, ASP.NET 8, PHP, API REST
+    - **Bases de Datos**: MySQL, Microsoft SQL Server, Redis, Upstash
+    - **Lenguajes**: C, C#, Java, JavaScript, TypeScript, Common Lisp, Assembler
+    - **ORM**: Entity Framework (C#)
+    - **Redes y Seguridad**: TCP/IP, HTTP/HTTPS, FTP/SFTP, DNS, routers, switches, firewalls, LAN/WAN, VPNs, Wi-Fi
+    - **Virtualización y Sistemas Operativos**: Hyper-V, servidores Windows/Linux, VirtualBox, Windows, Linux, MacOS
+    - **Servicios en la Nube**: AWS, Azure, Google Cloud
+    - **Marketing Digital**: Redes sociales, creación y edición de contenido visual
+    
+    **Habilidades adicionales**:
+    - Diagnóstico y resolución de problemas técnicos
+    - Gestión de proyectos audiovisuales en redes sociales
+    - Asesoramiento técnico en tecnología e infraestructura
+    - Documentación técnica y capacidad de comunicación en entornos bilingües
+
+    **Objetivos**:
+    - Ampliar experiencia en proyectos innovadores, especialmente en el desarrollo full stack y soluciones en la nube.
+    - Contribuir al crecimiento tecnológico de las organizaciones mediante la implementación de soluciones efectivas y modernas.
+    
+    **Datos personales**:
+    - **Intereses**: Programación, tecnologías emergentes, videojuegos de acción y suspenso, diseño de flyers y automatización de tareas.
+    - **Procesador actual**: Ryzen 7 5700G con 32GB RAM
+
+    """
+}

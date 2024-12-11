@@ -29,7 +29,7 @@ function logConversation(sender, question, answer) {
 async function getMetaAIResponse(prompt) {
     return new Promise((resolve, reject) => {
         const scriptPath = path.join(__dirname, 'ai', 'meta_ai_script.py');
-        const pythonProcess = spawn('python', [scriptPath, prompt], {
+        const pythonProcess = spawn('python3', [scriptPath, prompt], {
             env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
         });
 
