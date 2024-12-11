@@ -1,8 +1,9 @@
 const { spawn } = require('child_process');
+const path = require('path');
 
 async function getMetaAIResponse(prompt) {
     return new Promise((resolve, reject) => {
-        const scriptPath = path.join(__dirname, 'ai', 'meta_ai_script.py');
+        const scriptPath = path.join(__dirname, '..','ai', 'meta_ai_script.py');
         const pythonProcess = spawn('python3', [scriptPath, prompt], {
             env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
         });

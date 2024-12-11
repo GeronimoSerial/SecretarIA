@@ -75,7 +75,12 @@ client.on('message', async message => {
             await message.reply('Procesando tu solicitud... Por favor, espera un momento.');
             
             try {
-                const aiResponse = await getGPTResponse(userQuery);
+                let aiResponse;
+                if(AuthAdmin[userId]) {
+                    aiResponse = await getGPTResponse(userQuery);
+                }else {
+                    aiResponse = await getMetaAIResponse(userQuery);
+                }
                 await message.reply(aiResponse);
                 
                 // Registrar la conversación
