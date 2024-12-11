@@ -5,7 +5,7 @@ const {admins} = require('./data/variables');
 const path = require('path');
 const adminCommands = require('./data/adminCommands');
 const getGPTResponse = require('./context/getGPTResponse');
-const getMetaAIResponse = require('./context/getMetaAIResponse');
+const getGeminiResponse = require('./context/getGeminiResponse');
 
 
 const client = new Client({
@@ -79,7 +79,7 @@ client.on('message', async message => {
                 if(AuthAdmin[userId]) {
                     aiResponse = await getGPTResponse(userQuery);
                 }else {
-                    aiResponse = await getMetaAIResponse(userQuery);
+                    aiResponse = await getGeminiResponse(userQuery);
                 }
                 await message.reply(aiResponse);
                 

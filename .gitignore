@@ -3,3 +3,5 @@ node_modules
 .wwebjs_cache
 src/logs/conversation.log
 src/ai/__pycache__
+.env
+src/context/context.js
