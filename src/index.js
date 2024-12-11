@@ -4,8 +4,8 @@ const predefinedResponses = require('./data/predefinedResponses');
 const {admins} = require('./data/variables');
 const path = require('path');
 const adminCommands = require('./data/adminCommands');
-const getGPTResponse = require('./context/getGPTResponse');
-const getGeminiResponse = require('./context/getGeminiResponse');
+const getGPTResponse = require('./ai/getGPTResponse');
+const getGeminiResponse = require('./ai/getGeminiResponse');
 
 
 const client = new Client({
@@ -72,7 +72,7 @@ client.on('message', async message => {
             
             // Registrar la conversación
             logConversation(sender, userQuery, '');
-            await message.reply('Procesando tu solicitud... Por favor, espera un momento.');
+            // await message.reply('Procesando tu solicitud... Por favor, espera un momento.');
             
             try {
                 let aiResponse;

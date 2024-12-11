@@ -1,6 +1,9 @@
-
-async function getGPTResponse(prompt) {
+const {context} = require('../context/context');
+async function getGPTResponse(request) {
     const url = 'https://magicloops.dev/api/loop/2f01a444-afa3-4b1d-9e05-3d2dde3d99cc/run';
+   
+    const prompt = `${context} \nPregunta: ${request}`;
+    console.log(prompt)
     const payload = { "query": prompt };
     
     try {
