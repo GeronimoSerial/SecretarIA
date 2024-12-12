@@ -5,13 +5,8 @@ const {admins} = require('./data/variables');
 const path = require('path');
 const adminCommands = require('./data/adminCommands');
 const getGPTResponse = require('./ai/getGPTResponse');
-<<<<<<< Updated upstream
-const getGeminiResponse = require('./ai/getGeminiResponse');
-
-=======
 const getGeminiResponse = require('./ai/getGeminiResponseBETA');
 const run = require('./ai/getGeminiResponse')
->>>>>>> Stashed changes
 
 const client = new Client({
     authStrategy: new LocalAuth()
