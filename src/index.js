@@ -42,7 +42,7 @@ client.on('message', async message => {
     const userId = message.from; // definir correctamente el ID del usuario
     const contact = await message.getContact();
     const contactName = contact.pushname || contact.name || 'Desconocido';
-    context 
+    
     console.log(`Mensaje recibido de ${contactName}`);
     
 
@@ -84,7 +84,7 @@ client.on('message', async message => {
                 if(AuthAdmin[userId]) {
                     aiResponse = await getGPTResponse(userQuery);
                 }else {
-                    aiResponse = await run(userQuery);
+                    aiResponse = await run(userQuery, contactName);
                 }
                 await message.reply(aiResponse);
                 

@@ -10,9 +10,9 @@ const genAI = new GoogleGenerativeAI(Api);
 let chatHistory = [];
 let chat = null;
 
-async function run(request) {
+async function run(request, contactName) {
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    const prompt = `${context} \nPregunta: ${request}`;
+    const prompt = `Me llamo: ${contactName}\n ${context} \nPregunta: ${request}`;
     console.log(prompt)
 
     if (!chat) {
