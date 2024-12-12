@@ -5,8 +5,13 @@ const {admins} = require('./data/variables');
 const path = require('path');
 const adminCommands = require('./data/adminCommands');
 const getGPTResponse = require('./ai/getGPTResponse');
+<<<<<<< Updated upstream
 const getGeminiResponse = require('./ai/getGeminiResponse');
 
+=======
+const getGeminiResponse = require('./ai/getGeminiResponseBETA');
+const run = require('./ai/getGeminiResponse')
+>>>>>>> Stashed changes
 
 const client = new Client({
     authStrategy: new LocalAuth()
@@ -40,7 +45,12 @@ client.on('ready', () => {
 
 client.on('message', async message => {
     const userId = message.from; // definir correctamente el ID del usuario
+    const contact = await message.getContact();
+    const contactName = contact.pushname || contact.name || 'Desconocido';
+    context 
+    console.log(`Mensaje recibido de ${contactName}`);
     
+
     // Verificar si el mensaje es de un administrador
     if (message.body === '!login' && admins.includes(userId)) {
         AuthAdmin[userId] = true;
@@ -79,7 +89,7 @@ client.on('message', async message => {
                 if(AuthAdmin[userId]) {
                     aiResponse = await getGPTResponse(userQuery);
                 }else {
-                    aiResponse = await getGeminiResponse(userQuery);
+                    aiResponse = await run(userQuery);
                 }
                 await message.reply(aiResponse);
                 
@@ -92,5 +102,7 @@ client.on('message', async message => {
         }
     }
 );
+
+
 
 client.initialize();

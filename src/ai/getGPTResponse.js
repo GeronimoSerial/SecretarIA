@@ -16,6 +16,7 @@ async function getGPTResponse(request) {
             
         });
         const responseJson = await response.json();
+        console.log(responseJson);
         return responseJson;
     } catch (error) {
         console.error('Error al obtener la respuesta de OPENAI:', error);
