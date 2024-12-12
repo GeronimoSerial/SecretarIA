@@ -5,8 +5,8 @@ const {admins} = require('./data/variables');
 const path = require('path');
 const adminCommands = require('./data/adminCommands');
 const getGPTResponse = require('./ai/getGPTResponse');
-const getGeminiResponse = require('./ai/getGeminiResponseBETA');
-const run = require('./ai/getGeminiResponse')
+// const getGeminiResponse = require('./ai/getGeminiResponseBETA');
+const getGeminiResponse = require('./ai/getGeminiResponse')
 
 const client = new Client({
     authStrategy: new LocalAuth()
@@ -82,9 +82,9 @@ client.on('message', async message => {
             try {
                 let aiResponse;
                 if(AuthAdmin[userId]) {
-                    aiResponse = await getGPTResponse(userQuery);
+                    aiResponse = await getGPTResponse(userQuery, contactName);
                 }else {
-                    aiResponse = await run(userQuery, contactName);
+                    aiResponse = await getGeminiResponse(userQuery, contactName);
                 }
                 await message.reply(aiResponse);
                 

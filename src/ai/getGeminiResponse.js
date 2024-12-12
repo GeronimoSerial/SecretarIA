@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(Api);
 let chatHistory = [];
 let chat = null;
 
-async function run(request, contactName) {
+async function getGeminiResponse(request, contactName) {
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const prompt = `Me llamo: ${contactName}\n ${context} \nPregunta: ${request}`;
     console.log(prompt)
@@ -44,7 +44,7 @@ async function run(request, contactName) {
     }
 }
 
-module.exports = run;
+module.exports = getGeminiResponse;
 
 // async function getGeminiResponse(request) {
 //     const prompt = `${context} \nPregunta: ${request}`;
