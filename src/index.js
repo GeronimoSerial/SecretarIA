@@ -4,10 +4,10 @@ const path = require('path');
 const qrcode = require('qrcode-terminal');
 const dotenv = require('dotenv');
 
-// Load configuration and dependencies
+// Cargar configuración y dependencias
 dotenv.config();
 
-// Import custom modules
+// Importar módulos personalizados
 const predefinedResponses = require('./data/predefinedResponses');
 const { admins } = require('./data/variables');
 const adminCommands = require('./data/adminCommands');
@@ -15,33 +15,70 @@ const getGPTResponse = require('./ai/getGPTResponse');
 const GeminiChatService = require('./ai/getGeminiResponse');
 
 class WhatsAppBot {
-    // Inicializar configuraciones
+
     constructor() {
-        // Initialize configurations
+        // Inicializar configuraciones
         this.Api = process.env.GEMINI_API_KEY;
         this.AuthAdmin = {};
 
-        // Validate API key
+        // Validar clave API
         if (!this.Api) {
             throw new Error('Gemini API key is missing. Please check your .env file.');
         }
 
-        // Initialize Gemini Chat Service
+        // Inicializar el servicio de chat Gemini
         this.geminiService = new GeminiChatService(this.Api);
 
-        // Configure WhatsApp Client
+        // Configurar cliente de WhatsApp
         this.client = new Client({
             authStrategy: new LocalAuth(),
-            // Add additional configurations if needed
+            // Agregar configuraciones adicionales si es necesario
             puppeteer: {
                 headless: true,
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
             }
         });
 
-        // Setup event listeners
+        // Configurar listeners de eventos
         this.setupEventListeners();
+
+        //limitar mensajes
+        this.messageCounts = {};
+        this.messageLimit = 8;
+        this.timeFrame = 60000; // 1 minuto
     }
+
+    /**
+     * Verifica si el usuario ha excedido el límite de mensajes dentro del marco de tiempo dado
+     * @param {string} sender - El ID del remitente
+     * @returns {boolean} - Verdadero si se ha excedido el límite de mensajes, falso de lo contrario
+     */
+    messageLimitExceeded(sender) {
+        const currentTime = Date.now();
+        const userId = sender;
+
+        if (!this.messageCounts[userId]) {
+            this.messageCounts[userId] = { count: 1, firstMessageTime: currentTime };
+        }
+
+        const userMessageData = this.messageCounts[userId];
+
+        if (currentTime - userMessageData.firstMessageTime >= this.timeFrame){
+            userMessageData.count = 1;
+            userMessageData.firstMessageTime = currentTime;
+        }
+        else{
+            userMessageData.count++;
+        }
+        
+
+        if (userMessageData.count > this.messageLimit) {
+            return true;
+        }
+        return false;
+    }
+
+
 
     /**
      * Configurar los listeners de eventos para el cliente de WhatsApp
@@ -133,6 +170,7 @@ class WhatsAppBot {
         return predefinedResponses[userQuery] || null;
     }
 
+
     /**
      * Método principal para manejar mensajes
      * @param {Object} message - Objeto de mensaje de WhatsApp
@@ -140,23 +178,35 @@ class WhatsAppBot {
     async handleIncomingMessage(message) {
         // Ignorar mensajes enviados por el bot mismo
         if (message.fromMe) return;
-
+ 
+        // Ignorar mensajes que no son de texto
+        if (message.type !== 'chat') {
+            console.log(`No es un mensaje de texto. Tipo recibido: ${message.type}`);
+            await message.reply('Lo siento. Solo puedo procesar mensajes de texto por el momento.');
+            return;
+        }
+  
         const userId = message.from;
         const contact = await message.getContact();
         const contactName = contact.pushname || contact.name || 'Desconocido';
         const userQuery = message.body.toLowerCase();
         const sender = message.from;
 
-        // Check admin authentication
+        if(this.messageLimitExceeded(sender)) {
+            await message.reply('Has alcanzado el límite de mensajes. Por favor, espera unos minutos antes de enviar otro mensaje.');
+            return;
+        }
+
+        // Verificar autenticación de administrador
         const isAdmin = this.handleAdminAuthentication(message);
         
-        // Handle admin commands if authenticated
+        // Manejar comandos de administrador si está autenticado
         if (isAdmin) {
             const adminCommandExecuted = await this.handleAdminCommands(message);
             if (adminCommandExecuted) return;
         }
 
-        // Check for predefined responses
+        // Verificar respuestas predefinidas
         const predefinedResponse = this.getPredefinedResponse(userQuery);
         if (predefinedResponse) {
             await message.reply(predefinedResponse);
@@ -164,19 +214,19 @@ class WhatsAppBot {
             return;
         }
 
-        // Initial conversation log
+        // Registro inicial de conversación
         this.logConversation(sender, userQuery, '');
 
         try {
-            // Select AI response based on admin status
+            // Seleccionar respuesta de IA basada en el estado de administrador
             const aiResponse = isAdmin 
                 ? await getGPTResponse(userQuery, contactName)
                 : await this.geminiService.getResponse(userQuery, contactName);
 
-            // Reply to the message
+            // Responder al mensaje
             await message.reply(aiResponse);
 
-            // Log the complete conversation
+            // Registrar la conversación completa
             this.logConversation(sender, userQuery, aiResponse);
         } catch (error) {
             console.error('Error al procesar el mensaje:', error);

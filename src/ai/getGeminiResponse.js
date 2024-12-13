@@ -2,31 +2,31 @@ const dotenv = require('dotenv');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { context } = require('../context/context');
 
-// Load environment variables
+// Cargar variables de entorno
 dotenv.config();
 
 class GeminiChatService {
     constructor(apiKey, maxTokens = 100, model = 'gemini-1.5-flash') {
-        // Validate API key
+        // Validar clave API
         if (!apiKey) {
             throw new Error('Gemini API key is required');
         }
 
-        // Initialize Google Generative AI client
+        // Inicializar cliente de Google Generative AI
         this.genAI = new GoogleGenerativeAI(apiKey);
         
-        // Configuration settings
+        // Configuraciones
         this.modelName = model;
         this.maxTokens = maxTokens;
         
-        // Manage chat history
+        // Manejo del historial de chat
         this.chatHistory = [];
         this.chat = null;
     }
 
     /**
-     * Prepare the chat model with initial configuration
-     * @param {Array} initialHistory - Optional initial chat history
+     * Preparar el modelo de chat con configuración inicial
+     * @param {Array} initialHistory - Historial de chat inicial opcional
      */
     async initializeChat(initialHistory = []) {
         try {
@@ -47,41 +47,41 @@ class GeminiChatService {
     }
 
     /**
-     * Generate a response from Gemini API
-     * @param {string} request - User's message
-     * @param {string} contactName - Name of the contact
-     * @returns {Promise<string>} Generated response
+     * Generar una respuesta desde la API de Gemini
+     * @param {string} request - Mensaje del usuario
+     * @param {string} contactName - Nombre del contacto
+     * @returns {Promise<string>} Respuesta generada
      */
     async getResponse(request, contactName) {
-        // Validate inputs
+        // Validar entradas
         if (!request || !contactName) {
             throw new Error('Request and contact name are required');
         }
 
-        // Initialize chat if not already initialized
+        // Inicializar chat si no está ya inicializado
         if (!this.chat) {
             await this.initializeChat();
         }
 
-        // Construct comprehensive prompt
+        // Construir un mensaje comprensivo
         const prompt = `Me llamo: ${contactName}\n${context}\nPregunta: ${request}`;
         
-        // Prepare message for chat history
+        // Preparar mensaje para el historial de chat
         const message = { 
             role: "user", 
             parts: [{ text: request }] 
         };
 
         try {
-            // Update chat history
+            // Actualizar historial de chat
             this.chatHistory.push(message);
 
-            // Send message and get response
+            // Enviar mensaje y obtener respuesta
             const result = await this.chat.sendMessage(prompt);
             const response = await result.response;
             const generatedText = response.text();
 
-            // Store model's response in chat history
+            // Almacenar la respuesta del modelo en el historial de chat
             const modelResponse = { 
                 role: "model", 
                 parts: [{ text: generatedText }] 
@@ -96,7 +96,7 @@ class GeminiChatService {
         } catch (error) {
             console.error("Gemini API Error:", error);
             
-            // Enhanced error handling
+            // Manejo de errores 
             if (error.response) {
                 console.error("Detailed Response Error:", error.response.data);
             }
@@ -106,7 +106,7 @@ class GeminiChatService {
     }
 
     /**
-     * Reset chat history
+     * Resetear historial de chat
      */
     resetChatHistory() {
         this.chatHistory = [];
@@ -114,8 +114,8 @@ class GeminiChatService {
     }
 
     /**
-     * Get current chat history
-     * @returns {Array} Current chat history
+     * Obtener el historial de chat actual
+     * @returns {Array} Historial de chat actual
      */
     getChatHistory() {
         return this.chatHistory;
