@@ -67,19 +67,20 @@ Ambas IA comparten características como el manejo de contexto para la comunicac
 ## Estructura del Proyecto
 
 ```plaintext
-📦tu_repositorio
+📦SecretarIA
  ┣ 📂src
  ┃ ┣ 📂ai
- ┃ ┣  ┣📜getGPTResponse.js      # Configuración principal del bot
- ┃ ┣  ┣📜getGeminiResponse.js
+ ┃ ┣  ┣📜getGPTResponse.js       # Configuración de GPT
+ ┃ ┣  ┗📜getGeminiResponse.js    # Configuracion de integracion con GEMINI
  ┃ ┣ 📂context   
- ┃ ┣  ┣📜contextTemplate.js       # Lógica para integrar GPT
+ ┃ ┣  ┗📜contextTemplate.js      # Contexto para ambas IA
  ┃ ┣ 📂data   
- ┃ ┣  ┣ 📜adminCommands.js
- ┃ ┣  ┣ 📜predefinedResponses.js
- ┃ ┣  ┣ 📜variables.js     
- ┃ ┗ 📂logs       
- ┣ 📜.env.example     # Ejemplo de configuración de entorno
+ ┃ ┣  ┣ 📜adminCommands.js       # Comandos para administradores 
+ ┃ ┣  ┣ 📜predefinedResponses.js # Respuestas predefinidas
+ ┃ ┣  ┗ 📜variables.js           # Variables
+ ┃ ┗ 📂logs
+ ┃    ┗ 📜conversation.log       # log de conversaciones      
+ ┣ 📜.envTemplate     # Ejemplo de configuración de entorno
  ┣ 📜package.json     # Dependencias del proyecto
  ┗ 📜README.md        # Este archivo
 ```
