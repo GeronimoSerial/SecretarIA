@@ -17,4 +17,4 @@ const adminCommands = {
     }
 };
 
-module.exports = adminCommands
+module.exports = adminCommands;

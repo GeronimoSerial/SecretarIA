@@ -1,119 +1,251 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const { spawn } = require('child_process');
 const fs = require('fs');
-const predefinedResponses = require('./data/predefinedResponses');
-const {admins} = require('./data/variables');
 const path = require('path');
+const qrcode = require('qrcode-terminal');
+const dotenv = require('dotenv');
+
+// Cargar configuración y dependencias
+dotenv.config();
+
+// Importar módulos personalizados
+const predefinedResponses = require('./data/predefinedResponses');
+const { admins } = require('./data/variables');
 const adminCommands = require('./data/adminCommands');
+const getGPTResponse = require('./ai/getGPTResponse');
+const GeminiChatService = require('./ai/getGeminiResponse');
 
-const client = new Client({
-    authStrategy: new LocalAuth()
-});
+class WhatsAppBot {
 
-const AuthAdmin = {};
+    constructor() {
+        // Inicializar configuraciones
+        this.Api = process.env.GEMINI_API_KEY;
+        this.AuthAdmin = {};
 
-
-function logConversation(sender, question, answer) {
-
-    const logFilePath = path.join(__dirname, 'logs', 'conversation.log');
-    const logEntry = `[Sender: ${sender}]: Question: ${question}\n Respuesta: ${answer}\n\n`;
-    fs.appendFile(logFilePath, logEntry, (err) => {
-        if (err) {
-            console.error('Error al escribir en el archivo de registro: ', err);
-        } else {
-            console.log('Se ha escrito en el archivo de registro');
+        // Validar clave API
+        if (!this.Api) {
+            throw new Error('Gemini API key is missing. Please check your .env file.');
         }
-    })
-}
 
-async function getMetaAIResponse(prompt) {
-    return new Promise((resolve, reject) => {
-        const scriptPath = path.join(__dirname, 'ai', 'meta_ai_script.py');
-        const pythonProcess = spawn('python3', [scriptPath, prompt], {
-            env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
-        });
+        // Inicializar el servicio de chat Gemini
+        this.geminiService = new GeminiChatService(this.Api);
 
-        let result = '';
-
-        pythonProcess.stdout.setEncoding('utf-8');
-        pythonProcess.stdout.on('data', (data) => {
-            result += data;
-        });
-
-        pythonProcess.stderr.on('data', (data) => {
-            console.error(`Error: ${data}`);
-            reject('Error al comunicarse con la API de Meta AI');
-        });
-
-        pythonProcess.on('close', (code) => {
-            if (code === 0) {
-                resolve(result.trim());
-            } else {
-                reject('Error en el proceso Python');
+        // Configurar cliente de WhatsApp
+        this.client = new Client({
+            authStrategy: new LocalAuth(),
+            // Agregar configuraciones adicionales si es necesario
+            puppeteer: {
+                headless: true,
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
             }
         });
-    });
-}
 
-client.on('qr', (qr) => {
-    const qrcode = require('qrcode-terminal');
-    qrcode.generate(qr, { small: true });
-    console.log('Escanea este código QR con tu teléfono.');
-});
+        // Configurar listeners de eventos
+        this.setupEventListeners();
 
-client.on('ready', () => {
-    console.log('El bot está listo y conectado.');
-});
+        //limitar mensajes
+        this.messageCounts = {};
+        this.messageLimit = 8;
+        this.timeFrame = 60000; // 1 minuto
+    }
 
-client.on('message', async message => {
-    const userId = message.from; // Asegúrate de definir correctamente el ID del usuario
+    /**
+     * Verifica si el usuario ha excedido el límite de mensajes dentro del marco de tiempo dado
+     * @param {string} sender - El ID del remitente
+     * @returns {boolean} - Verdadero si se ha excedido el límite de mensajes, falso de lo contrario
+     */
+    messageLimitExceeded(sender) {
+        const currentTime = Date.now();
+        const userId = sender;
 
-    // Verificar si el mensaje es de un administrador
-    if (message.body === '!login' && admins.includes(userId)) {
-            AuthAdmin[userId] = true;
-            return message.reply('Autenticado como administrador. Tienes permisos especiales.');
+        if (!this.messageCounts[userId]) {
+            this.messageCounts[userId] = { count: 1, firstMessageTime: currentTime };
         }
-        else if (message.body === '!logout') {
-            AuthAdmin[userId] = false;
-            return message.reply('Sesión cerrada. No tienes permisos especiales.');
+
+        const userMessageData = this.messageCounts[userId];
+
+        if (currentTime - userMessageData.firstMessageTime >= this.timeFrame){
+            userMessageData.count = 1;
+            userMessageData.firstMessageTime = currentTime;
+        }
+        else{
+            userMessageData.count++;
         }
         
-        // Verificar si el administrador está autenticado
-        if (AuthAdmin[userId]) {
-            const command = message.body.split(' ')[0].toLowerCase();
-            if (adminCommands.hasOwnProperty(command)) {
-                await adminCommands[command](message);
-                return;
+
+        if (userMessageData.count > this.messageLimit) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    /**
+     * Configurar los listeners de eventos para el cliente de WhatsApp
+     */
+    setupEventListeners() {
+        this.client.on('qr', this.handleQRCode);
+        this.client.on('ready', this.handleClientReady);
+        this.client.on('message', this.handleIncomingMessage.bind(this));
+    }
+
+    /**
+     * Manejar la generación del código QR para la autenticación
+     * @param {string} qr - Cadena del código QR
+     */
+    handleQRCode(qr) {
+        qrcode.generate(qr, { small: true });
+        console.log('Escanea este código QR con tu teléfono.');
+    }
+
+    /**
+     * Registrar cuando el cliente está listo
+     */
+    handleClientReady() {
+        console.log('El bot está listo y conectado.');
+    }
+
+    /**
+     * Registrar conversaciones en un archivo
+     * @param {string} sender - Identificador del remitente 
+     * @param {string} question - Mensaje del usuario
+     * @param {string} answer - Respuesta del bot
+     */
+    logConversation(sender, question, answer) {
+        const logFilePath = path.join(__dirname, 'logs', 'conversation.log');
+        const logEntry = `[Sender: ${sender}]: Question: ${question}\n Respuesta: ${answer}\n\n`;
+
+        fs.appendFile(logFilePath, logEntry, (err) => {
+            if (err) {
+                console.error('Error al escribir en el archivo de registro: ', err);
+            } else {
+                console.log('Se ha escrito en el archivo de registro');
             }
-        }     
-     
-       // Manejo de mensajes de usuarios no autorizados
-     if (!message.fromMe) {
-            const userQuery = message.body.toLowerCase();
-            const sender = message.from;
+        });
+    }
 
-            if (predefinedResponses[userQuery]) {
-                await message.reply(predefinedResponses[userQuery]);
-                return;
-            }
+    /**
+     * Manejar la autenticación de administradores
+     * @param {Object} message - Objeto de mensaje de WhatsApp
+     * @returns {boolean} - Resultado de la autenticación
+     */
+    handleAdminAuthentication(message) {
+        const userId = message.from;
 
-            // Registrar la conversación
-            logConversation(sender, userQuery, '');
-            await message.reply('Procesando tu solicitud... Por favor, espera un momento.');
+        if (message.body === '!login' && admins.includes(userId)) {
+            this.AuthAdmin[userId] = true;
+            message.reply('Autenticado como administrador. Tienes permisos especiales.');
+            return true;
+        }
+        
+        if (message.body === '!logout') {
+            this.AuthAdmin[userId] = false;
+            message.reply('Sesión cerrada. No tienes permisos especiales.');
+            return false;
+        }
 
-            try {
-                const aiResponse = await getMetaAIResponse(userQuery);
-                await message.reply(aiResponse);
+        return this.AuthAdmin[userId] || false;
+    }
 
-                // Registrar la conversación
-                logConversation(sender, userQuery, aiResponse);
-            } catch (error) {
-                console.error('Error al procesar el mensaje:', error);
-                await message.reply('Lo siento, hubo un error al procesar tu mensaje.');
-            }
+    /**
+     * Manejar comandos de administrador entrantes
+     * @param {Object} message - Objeto de mensaje de WhatsApp
+     * @returns {Promise<boolean>} - Resultado de la ejecución del comando
+     */
+    async handleAdminCommands(message) {
+        const command = message.body.split(' ')[0].toLowerCase();
+        if (adminCommands.hasOwnProperty(command)) {
+            await adminCommands[command](message);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Manejar respuestas predefinidas
+     * @param {string} userQuery - Mensaje del usuario
+     * @returns {string|null} - Respuesta predefinida o null
+     */
+    getPredefinedResponse(userQuery) {
+        return predefinedResponses[userQuery] || null;
+    }
+
+
+    /**
+     * Método principal para manejar mensajes
+     * @param {Object} message - Objeto de mensaje de WhatsApp
+     */
+    async handleIncomingMessage(message) {
+        // Ignorar mensajes enviados por el bot mismo
+        if (message.fromMe) return;
+ 
+        // Ignorar mensajes que no son de texto
+        if (message.type !== 'chat') {
+            console.log(`No es un mensaje de texto. Tipo recibido: ${message.type}`);
+            await message.reply('Lo siento. Solo puedo procesar mensajes de texto por el momento.');
+            return;
+        }
+  
+        const userId = message.from;
+        const contact = await message.getContact();
+        const contactName = contact.pushname || contact.name || 'Desconocido';
+        const userQuery = message.body.toLowerCase();
+        const sender = message.from;
+
+        if(this.messageLimitExceeded(sender)) {
+            await message.reply('Has alcanzado el límite de mensajes. Por favor, espera unos minutos antes de enviar otro mensaje.');
+            return;
+        }
+
+        // Verificar autenticación de administrador
+        const isAdmin = this.handleAdminAuthentication(message);
+        
+        // Manejar comandos de administrador si está autenticado
+        if (isAdmin) {
+            const adminCommandExecuted = await this.handleAdminCommands(message);
+            if (adminCommandExecuted) return;
+        }
+
+        // Verificar respuestas predefinidas
+        const predefinedResponse = this.getPredefinedResponse(userQuery);
+        if (predefinedResponse) {
+            await message.reply(predefinedResponse);
+            this.logConversation(sender, userQuery, predefinedResponse);
+            return;
+        }
+
+        // Registro inicial de conversación
+        this.logConversation(sender, userQuery, '');
+
+        try {
+            // Seleccionar respuesta de IA basada en el estado de administrador
+            const aiResponse = isAdmin 
+                ? await getGPTResponse(userQuery, contactName)
+                : await this.geminiService.getResponse(userQuery, contactName);
+
+            // Responder al mensaje
+            await message.reply(aiResponse);
+
+            // Registrar la conversación completa
+            this.logConversation(sender, userQuery, aiResponse);
+        } catch (error) {
+            console.error('Error al procesar el mensaje:', error);
+            await message.reply('Lo siento, hubo un error al procesar tu mensaje.');
         }
     }
-);
 
+    /**
+     * Iniciar el bot de WhatsApp
+     */
+    start() {
+        try {
+            this.client.initialize();
+        } catch (error) {
+            console.error('Error initializing WhatsApp client:', error);
+        }
+    }
+}
 
-client.initialize();
+// Instanciar y comenzar el bot
+const whatsAppBot = new WhatsAppBot();
+whatsAppBot.start();
