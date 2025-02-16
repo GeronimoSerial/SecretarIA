@@ -13,6 +13,7 @@ const { admins } = require('./data/variables');
 const adminCommands = require('./data/adminCommands');
 const getGPTResponse = require('./ai/getGPTResponse');
 const GeminiChatService = require('./ai/getGeminiResponse');
+// const OpenAIChatService = require('./ai/getDeepseekResponse');
 
 class WhatsAppBot {
 
@@ -21,13 +22,19 @@ class WhatsAppBot {
         this.Api = process.env.GEMINI_API_KEY;
         this.AuthAdmin = {};
 
-        // Validar clave API
-        if (!this.Api) {
-            throw new Error('Gemini API key is missing. Please check your .env file.');
-        }
-
+        
         // Inicializar el servicio de chat Gemini
         this.geminiService = new GeminiChatService(this.Api);
+        
+        // Inicializar el servicio de chat Deepseek
+        // this.Api = process.env.DEEPSEEK_API_KEY;
+        // this.baseURL = process.env.DEEPSEEK_BASE_URL;
+        // this.OpenAIChatService = new OpenAIChatService(this.Api, this.baseURL);
+        
+       // Validar clave API
+        if (!this.Api) {
+            throw new Error(' API key is missing. Please check your .env file.');
+        }
 
         // Configurar cliente de WhatsApp
         this.client = new Client({
@@ -221,7 +228,9 @@ class WhatsAppBot {
             // Seleccionar respuesta de IA basada en el estado de administrador
             const aiResponse = isAdmin 
                 ? await getGPTResponse(userQuery, contactName)
+                // : await this.OpenAIChatService.getResponse(userQuery, contactName);
                 : await this.geminiService.getResponse(userQuery, contactName);
+
 
             // Responder al mensaje
             await message.reply(aiResponse);
