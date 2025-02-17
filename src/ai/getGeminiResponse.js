@@ -6,7 +6,7 @@ const { context } = require('../context/context');
 dotenv.config();
 
 class GeminiChatService {
-    constructor(apiKey, maxTokens = 100, model = 'gemini-1.5-flash') {
+    constructor(apiKey, maxTokens = 200, model = 'gemini-1.5-flash') {
         // Validar clave API
         if (!apiKey) {
             throw new Error('Gemini API key is required');
@@ -22,6 +22,7 @@ class GeminiChatService {
         // Manejo del historial de chat
         this.chatHistory = [];
         this.chat = null;
+        this.predefinedContext = context;
     }
 
     /**
@@ -34,8 +35,14 @@ class GeminiChatService {
                 model: this.modelName 
             });
 
+            // incluye el contexto inicial si está definido
+
+            const initialChatHistoryWithContext = initialHistory.lenght > 0 ? 
+                [{ role: "user", parts: [{ text: this.predefinedContext }] }, ...initialHistory] :
+                [{ role: "user", parts: [{ text: this.predefinedContext }] }];
+
             this.chat = model.startChat({
-                history: initialHistory,
+                history: initialChatHistoryWithContext,
                 generationConfig: {
                     maxOutputTokens: this.maxTokens,
                 }
@@ -91,7 +98,8 @@ class GeminiChatService {
             // Optional: Log for debugging
             console.log("Response:", generatedText);
             console.log("Current History Length:", this.chatHistory.length);
-
+            // console.log("Current Chat State:", this.chat.getState());
+            console.log("Current Chat History:", this.chatHistory);
             return generatedText;
         } catch (error) {
             console.error("Gemini API Error:", error);

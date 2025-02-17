@@ -1,20 +1,26 @@
 const location = require('./variables').location;
 
 const predefinedResponses = {
-    
     // saludos 
-    'hola': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'hola como estas': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'buen dia': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'buenas tardes': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'buenas noches': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'buenos dias': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'buenos tardes': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'buenos noches': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
-    'buenas': 'Hola, soy el asistente virtual de Geronimo Serial (https://geroserial.com). Escribe *menu* para ver mis opciones.',
+    'hola': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'hola como estas': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'buen dia': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'buenas tardes': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'buenas noches': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'buenos dias': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'buenos tardes': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'buenos noches': 'Hola, soy el asistente virtual del Consejo General de Educación. Estoy aquí para ayudarte a resolver tus consultas, aunque actualmente me encuentro en fase de desarrollo, por lo que es posible que la información proporcionada no sea siempre precisa. Si tienes alguna duda o necesitas confirmar algún dato, te recomiendo contactarnos directamente a través de nuestro Instagram @consejogeneral o por correo electrónico a cge@mec.gob.ar. ¡Estamos aquí para ayudarte!',
+    'buenas': 'Hola, soy el asistente virtual del Consejo General de Educación. Escribe *menu* para ver mis opciones.',
     'ubicacion': location,
-
-   'default': 'Lo siento, no entiendo esa opción. Por favor, elige una de las opciones disponibles en el menú enviando el número correspondiente.'
 }
     module.exports = predefinedResponses;
-
+    
+    //     // menú
+    //     'menu': 'Estas son las opciones disponibles:\n1. *Información sobre el Consejo General de Educación*\n2. *Contacto*\n3. *Ubicación*\n4. *Horarios*\n5. *Ayuda*',
+    //     '1': 'El Consejo General de Educación de Corrientes es responsable de planificar, conducir y evaluar la implementación de las políticas, planes y programas provinciales y nacionales en escuelas del nivel inicial y primario y sus modalidades.',
+    //     '2': 'Puedes contactarnos a través de:\n- Teléfono: 3794376025\n- Correo electrónico:cge@mec.gob.ar\n- Dirección: Catamarca 640, Corrientes, Argentina',
+    //     '3': location,
+    //     '4': 'Nuestro horario de atención es de lunes a viernes de 7:00 a 13:00 horas.',
+    //     '5': 'Si necesitas ayuda, por favor envía un mensaje a través del chat.',
+    //     'default': 'Lo siento, no entiendo esa opción. Por favor, elige una de las opciones disponibles en el menú enviando el número correspondiente.'
+    // }

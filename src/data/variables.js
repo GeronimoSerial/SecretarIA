@@ -1,9 +1,9 @@
 const {Location} = require('whatsapp-web.js');
 
 // variable de ubicación
-const latitude = -34.603722;
-const longitude = -58.381592;
-const description = 'Catamarca, Argentina';
+const latitude = -27.4650556;
+const longitude = -58.8328056;
+const description = 'Corrientes, Argentina';
 const location = new Location(latitude, longitude, description);
 
 
